@@ -1,5 +1,5 @@
 # Portfolio site
 
-Reserved for the public `portfolio.jaybox.dev` Cloudflare Pages project.
+The public source for `portfolio.jaybox.dev` now lives in the separate [`JVng36/jaybox-portfolio`](https://github.com/JVng36/jaybox-portfolio) repository.
 
-Build this as a separate public repository when Jay is ready to choose the portfolio content and publishing scope. Do not link a résumé, work samples, or professional contact details until Jay has reviewed the exact public copy.
+This placeholder remains only to preserve the original repository layout. Do not add a second portfolio implementation here.

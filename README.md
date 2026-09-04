@@ -5,4 +5,4 @@ The public source for [jaybox.dev](https://jaybox.dev), Jay’s home on the web 
 ## Sites
 
 - `landing/` powers `jaybox.dev`.
-- `portfolio/` is being prepared for `portfolio.jaybox.dev`.
+- The independent [`JVng36/jaybox-portfolio`](https://github.com/JVng36/jaybox-portfolio) repository powers `portfolio.jaybox.dev`.
