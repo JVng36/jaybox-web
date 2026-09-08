@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tabbed Notebook · Jay</title>
+  <style>
+    /* TABBED NOTEBOOK: a persistent identity beside one changing middle page.
+       Surface: Explore. The navigation is the main difference from a long scroll. */
+    :root {
+      --desk: #eeeae4;
+      --paper: #fffefb;
+      --ink: #332d28;
+      --muted: #6c6259;
+      --accent: #74442e;
+      --line: #d7cec4;
+      --selection: #e0d6c8;
+    }
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--desk);
+      font: 17px/1.65 Arial, Helvetica, sans-serif;
+      overflow-wrap: break-word;
+    }
+    a { color: var(--accent); text-underline-offset: 4px; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+    .skip { position: absolute; top: -100px; left: 16px; padding: 10px; background: var(--paper); }
+    .skip:focus { top: 8px; z-index: 2; }
+
+    /* Two columns, but this time the middle area is a visible sheet of paper. */
+    .notebook {
+      display: grid;
+      grid-template-columns: 210px minmax(0, 720px);
+      gap: 42px;
+      width: min(1040px, calc(100% - 64px));
+      margin: 56px auto;
+      align-items: start;
+    }
+    .profile { position: sticky; top: 32px; padding-top: 18px; }
+    h1 { font: normal 43px/1.1 Georgia, serif; margin: 0; letter-spacing: -1px; }
+    .bio { color: var(--muted); font-size: 15px; max-width: 23ch; margin: 18px 0 26px; }
+    .small-note { font-size: 13px; color: var(--muted); margin-top: 30px; }
+    nav { display: flex; flex-direction: column; gap: 6px; }
+    nav a {
+      display: flex;
+      align-items: center;
+      min-height: 46px;
+      padding: 8px 12px;
+      border: 1px solid transparent;
+      border-radius: 3px;
+      text-decoration: none;
+    }
+    nav a:hover { background: var(--selection); }
+    /* aria-selected is also a useful CSS hook; the state is not color alone. */
+    nav a[aria-selected="true"] {
+      color: var(--ink);
+      background: var(--selection);
+      border-color: #bbaa99;
+      font-weight: bold;
+    }
+    main { background: var(--paper); border: 1px solid var(--line); min-width: 0; padding: 36px 40px; }
+    .panel { margin-bottom: 36px; }
+    .tabs-ready .panel { min-height: 600px; margin-bottom: 0; }
+    .page-label { color: var(--muted); font-size: 12px; margin: 0 0 10px; }
+    h2 { margin: 0; font: normal 32px/1.2 Georgia, serif; }
+    .intro { color: var(--muted); font-size: 16px; margin: 16px 0 28px; max-width: 46ch; }
+    .project { padding: 22px 0; border-top: 1px solid var(--line); }
+    h3 { font-size: 19px; font-weight: normal; margin: 0; line-height: 1.4; }
+    .project > p { margin: 8px 0 6px; color: var(--muted); font-size: 15px; }
+    summary {
+      display: list-item;
+      list-style-position: inside;
+      width: fit-content;
+      min-height: 44px;
+      padding: 9px 0;
+      color: var(--accent);
+      font-size: 14px;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+    summary:hover { color: var(--ink); }
+    details p { font-size: 15px; color: var(--muted); }
+    .about-copy p { max-width: 49ch; color: var(--muted); }
+    .about-copy h3 { margin-top: 26px; }
+    .interests { padding-left: 20px; color: var(--muted); }
+    .interests li { margin-bottom: 12px; }
+    footer { padding-top: 20px; margin-top: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; }
+
+    /* On phones the identity sits on top and the same tabs become horizontal. */
+    @media (max-width: 760px) {
+      .notebook { grid-template-columns: 1fr; width: calc(100% - 28px); gap: 22px; margin: 24px auto; }
+      .profile { position: static; padding: 0 8px; }
+      .bio { max-width: 40ch; margin-bottom: 18px; }
+      nav { flex-direction: row; flex-wrap: wrap; gap: 6px; }
+      .small-note { margin: 14px 0 0; }
+      main { padding: 26px 22px; }
+      .tabs-ready .panel { min-height: 420px; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="notebook">
+    <!-- IDENTITY: the nav starts as ordinary links, so no-JS still works. -->
+    <header class="profile">
+      <h1>Jay</h1>
+      <p class="bio">Small projects, things I'm learning, and a little about the person behind them.</p>
+      <nav id="sections" aria-label="Notebook sections">
+        <a href="#work" id="tab-work">Projects</a>
+        <a href="#about" id="tab-about">About me</a>
+        <a href="#contact" id="tab-contact">Contact</a>
+      </nav>
+      <p class="small-note">Pick a section. The page beside it changes.</p>
+    </header>
+
+    <main id="main" tabindex="-1">
+      <!-- All sections are readable without JS. The script enhances them into tabs. -->
+      <section class="panel" id="work" aria-labelledby="work-title">
+        <p class="page-label">From my notebook</p>
+        <h2 id="work-title">Projects</h2>
+        <p class="intro">A few things I've made or am still figuring out. Open a note for the slightly longer version.</p>
+        <article class="project">
+          <h3>A weekend website</h3>
+          <p>A home for a few ideas, built slowly and kept simple.</p>
+          <details><summary>Read my notes</summary><p>The aim, an interesting decision, and a real project link could go here.</p></details>
+        </article>
+        <article class="project">
+          <h3>A useful little data tool</h3>
+          <p>A helper for making messy tables less of a chore.</p>
+          <details><summary>Read my notes</summary><p>A few sentences about the problem are usually more interesting than a long list of technologies.</p></details>
+        </article>
+        <article class="project">
+          <h3>Things to come back to</h3>
+          <p>A small place to keep books, ideas, and unfinished work.</p>
+          <details><summary>Read my notes</summary><p>Leave room for projects that are personal or still in progress.</p></details>
+        </article>
+      </section>
+      <section class="panel about-copy" id="about" aria-labelledby="about-title">
+        <p class="page-label">The person behind the projects</p>
+        <h2 id="about-title">A little about me</h2>
+        <p>This is where you can be less concise than the sidebar. A short introduction, what you enjoy making, and the kind of problems that catch your attention.</p>
+        <h3>Outside the code</h3>
+        <p>A few non-work interests give this page a person, not just a skill list. Replace these prompts with things you actually want to share.</p>
+        <ul class="interests"><li>Something you are learning</li><li>Something you do for fun</li><li>Something you are curious about</li></ul>
+      </section>
+      <section class="panel about-copy" id="contact" aria-labelledby="contact-title">
+        <p class="page-label">Leave a note</p>
+        <h2 id="contact-title">Say hello</h2>
+        <p>Your chosen public email or profile link belongs here. You do not need a contact form, a scheduling widget, or a row of social icons.</p>
+        <p>Keep this page as simple as the way you want someone to get in touch.</p>
+      </section>
+      <footer>Tabbed Notebook layout study. All personal and project copy is illustrative.</footer>
+    </main>
+  </div>
+
+  <script>
+    // Progressive enhancement: regular anchor links become accessible tabs.
+    // If JS is unavailable, the three sections remain visible in document order.
+    const navigation = document.querySelector('#sections');
+    const tabs = [...navigation.querySelectorAll('a')];
+    const panels = tabs.map(tab => document.querySelector(tab.getAttribute('href')));
+    const narrowScreen = window.matchMedia('(max-width: 760px)');
+
+    navigation.setAttribute('role', 'tablist');
+    function updateOrientation() {
+      navigation.setAttribute('aria-orientation', narrowScreen.matches ? 'horizontal' : 'vertical');
+    }
+    updateOrientation();
+    narrowScreen.addEventListener('change', updateOrientation);
+
+    tabs.forEach((tab, index) => {
+      tab.setAttribute('role', 'tab');
+      tab.setAttribute('aria-controls', panels[index].id);
+      panels[index].setAttribute('role', 'tabpanel');
+      panels[index].setAttribute('aria-labelledby', tab.id);
+      panels[index].tabIndex = 0;
+    });
+
+    function selectTab(index, moveFocus = false) {
+      tabs.forEach((tab, position) => {
+        const selected = position === index;
+        tab.setAttribute('aria-selected', String(selected));
+        tab.tabIndex = selected ? 0 : -1;
+        panels[position].hidden = !selected;
+      });
+      if (moveFocus) tabs[index].focus();
+    }
+
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', event => {
+        event.preventDefault();
+        selectTab(index);
+      });
+      tab.addEventListener('keydown', event => {
+        let next = index;
+        if (event.key === 'ArrowDown' || event.key === 'ArrowRight') next = (index + 1) % tabs.length;
+        else if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') next = (index - 1 + tabs.length) % tabs.length;
+        else if (event.key === 'Home') next = 0;
+        else if (event.key === 'End') next = tabs.length - 1;
+        else if (event.key !== ' ') return;
+        event.preventDefault();
+        selectTab(next, true);
+      });
+    });
+
+    document.querySelector('.notebook').classList.add('tabs-ready');
+    const initial = tabs.findIndex(tab => tab.getAttribute('href') === window.location.hash);
+    selectTab(initial >= 0 ? initial : 0);
+  </script>
+</body>
+</html>

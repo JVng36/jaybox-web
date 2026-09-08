@@ -3,3 +3,116 @@ body,
 #root {
   min-height: 100%;
 }
+
+/* 1. Change these colors to restyle the notebook without changing the layout. */
+:root {
+  --desk: #eeeae4;
+  --paper: #fffefb;
+  --ink: #332d28;
+  --muted: #6c6259;
+  --accent: #74442e;
+  --line: #d7cec4;
+  --selection: #e0d6c8;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--desk);
+  font: 17px/1.65 Arial, Helvetica, sans-serif;
+  overflow-wrap: break-word;
+}
+
+a { color: var(--accent); text-underline-offset: 4px; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.skip { position: absolute; top: -100px; left: 16px; padding: 10px; background: var(--paper); }
+.skip:focus { top: 8px; z-index: 2; }
+
+/* 2. Grid puts the identity beside a sheet of paper. */
+.notebook {
+  display: grid;
+  grid-template-columns: 210px minmax(0, 720px);
+  gap: 42px;
+  width: min(1040px, calc(100% - 64px));
+  margin: 56px auto;
+  align-items: start;
+}
+
+.profile { position: sticky; top: 32px; padding-top: 18px; }
+h1 { font: normal 43px/1.1 Georgia, serif; margin: 0; letter-spacing: -1px; }
+.bio { color: var(--muted); font-size: 15px; max-width: 23ch; margin: 18px 0 26px; }
+.small-note { font-size: 13px; color: var(--muted); margin-top: 30px; }
+
+/* 3. The buttons get their selected state from React's aria-selected attribute. */
+.tabs { display: flex; flex-direction: column; gap: 6px; }
+.tabs button {
+  display: flex;
+  align-items: center;
+  min-height: 46px;
+  padding: 8px 12px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--accent);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.tabs button:hover { background: var(--selection); }
+.tabs button[aria-selected="true"] {
+  color: var(--ink);
+  background: var(--selection);
+  border-color: #bbaa99;
+  font-weight: bold;
+}
+
+/* 4. A minimum height keeps the sheet steady when changing sections. */
+main { background: var(--paper); border: 1px solid var(--line); min-width: 0; padding: 36px 40px; }
+.panel { min-height: 600px; }
+.page-label { color: var(--muted); font-size: 12px; margin: 0 0 10px; }
+h2 { margin: 0; font: normal 32px/1.2 Georgia, serif; }
+.intro { color: var(--muted); font-size: 16px; margin: 16px 0 28px; max-width: 46ch; }
+.project { padding: 22px 0; border-top: 1px solid var(--line); }
+h3 { font-size: 19px; font-weight: normal; margin: 0; line-height: 1.4; }
+.project > p { margin: 8px 0 6px; color: var(--muted); font-size: 15px; }
+
+/* Native details/summary handles project notes without extra React state. */
+summary {
+  display: list-item;
+  list-style-position: inside;
+  width: fit-content;
+  min-height: 44px;
+  padding: 9px 0;
+  color: var(--accent);
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+summary:hover { color: var(--ink); }
+details p { font-size: 15px; color: var(--muted); }
+.about-copy p { max-width: 49ch; color: var(--muted); }
+.about-copy h3 { margin-top: 26px; }
+.interests { padding-left: 20px; color: var(--muted); }
+.interests li { margin-bottom: 12px; }
+footer { padding-top: 20px; margin-top: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; }
+
+/* 5. On phones, the identity moves above the sheet and tabs run horizontally.
+   The keyboard orientation in App.jsx uses the same 760px breakpoint. */
+@media (max-width: 760px) {
+  .notebook { grid-template-columns: 1fr; width: calc(100% - 28px); gap: 22px; margin: 24px auto; }
+  .profile { position: static; padding: 0 8px; }
+  .bio { max-width: 40ch; margin-bottom: 18px; }
+  .tabs { flex-direction: row; flex-wrap: wrap; gap: 6px; }
+  .small-note { margin: 14px 0 0; }
+  main { padding: 26px 22px; }
+  .panel { min-height: 420px; }
+}
+
+/* A short desktop window must not trap the bottom of the sidebar. */
+@media (max-height: 500px) {
+  .profile { position: static; }
+}
