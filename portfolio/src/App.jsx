@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { projects } from './projects'
 
-const workTitle = 'projects'
+const workTitle = 'Projects'
 
 // The tab and the page heading share this title. The styles live in index.css.
 const sections = [
