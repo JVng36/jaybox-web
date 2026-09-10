@@ -1,8 +1,8 @@
 # Portfolio site
 
-The **Tabbed Notebook** layout, built with React and plain CSS. Your name and short introduction sit beside a paper-like panel with Projects, About me, and Contact tabs. On small screens the sidebar moves above the panel.
+The **Tabbed Notebook** layout, built with React and plain CSS. Jay's name and short introduction sit beside a paper-like panel with projects, About me, and Contact tabs. On small screens the sidebar moves above the panel.
 
-This folder is the public source for the separate `portfolio.jaybox.dev` Cloudflare Pages project. The current text is illustrative. Do not link a résumé, real work samples, or professional contact details until Jay has reviewed the exact public copy. A local build is not permission to publish it.
+This folder is the public source for the separate `portfolio.jaybox.dev` Cloudflare Pages project. The project copy refers to public repositories, with source references in `CONTENT.md`. Review the exact project and About copy with Jay before publishing. Contact uses the LinkedIn profile and email address Jay explicitly selected for this portfolio. It has no contact form or email backend. A local build is not permission to publish it.
 
 ## Run locally
 
@@ -23,15 +23,20 @@ The entry path is `index.html` → `src/main.jsx` → `src/App.jsx`.
 
 | File | Purpose |
 | --- | --- |
-| `src/App.jsx` | The visible page and its sample text. `Projects`, `About`, and `Contact` are small components in this file. The `App` component below them puts the page together. |
+| `src/App.jsx` | The page markup, shared `workTitle`, About and Contact text, and tab behavior. `Projects` receives its heading as a prop. The `App` component below puts the page together. |
+| `src/projects.js` | Project titles, categories, descriptions, technology labels, notes, and public GitHub links. Array order is display order. |
 | `src/index.css` | Colors, spacing, typography, the two-column layout, and the mobile layout. The stylesheet is split into numbered sections. |
 | `src/main.jsx` | Connects React to the HTML page. You do not need to edit this to change your portfolio content. |
 | `index.html` | The browser title, description, favicon link, and root element. |
 | `tests/notebook.spec.js` | Browser checks for tab selection, keyboard use, project notes, direct links, and responsive layout. |
+| `tests/portfolio.spec.js` | Checks project order and links, personal copy, metadata, and phone-sized link targets. |
+| `CONTENT.md` | Public evidence behind the project descriptions and boundaries to preserve when editing. |
 
-**For your first edits, ignore the keyboard code.** Change a project title or description in `Projects`, then save and look at the browser. Next, try changing a color in the stylesheet's `:root` block.
+**For your first edits, ignore the keyboard code.** Change a project title or description in `src/projects.js`, then save and look at the browser. Next, try changing a color in the stylesheet's `:root` block.
 
-The project markup is intentionally written out instead of using a content database or configuration system. To add a project, duplicate one complete `<article className="project">` in `Projects` and change its text.
+There is no content database or CMS. `projects` is an ordinary array of objects, rendered with `.map()` just like the navigation. To add a project, duplicate an object, give it a unique `id`, and edit its text and URL. Each item in `notes` becomes a paragraph inside the browser's native disclosure.
+
+The shared-title path is `workTitle` → `<Projects title={workTitle} />` → `function Projects({ title })` → `<h2>{title}</h2>`. The tab label uses the same `workTitle` value. IDs such as `work` stay separate from the displayed wording.
 
 ## How the tabs work
 
@@ -70,6 +75,8 @@ On a fresh Linux machine, Playwright may also need system browser libraries; its
 
 Playwright is a **development-only** test dependency. The website itself uses only the existing React runtime and plain CSS. Test output is ignored by Git.
 
+When intentionally changing the shared title, update `workTitle` in `tests/notebook.spec.js` as well. When adding or reordering projects, update `expectedProjects` in `tests/portfolio.spec.js`. The tests should describe the intended content, not silently accept any array the app renders.
+
 ## Publishing boundary
 
-Keep source inside this repository's `portfolio/` directory. Do not move it into a separate repository. The deployment remains separate from the main Jaybox site. No new publishing configuration or public contact information is part of this layout implementation.
+Keep source inside this repository's `portfolio/` directory. Do not move it into a separate repository. The deployment remains separate from the main Jaybox site. No publishing configuration is changed by the content update. Do not add private project material, host details, credentials, a résumé, or personal contact information without a separate review.

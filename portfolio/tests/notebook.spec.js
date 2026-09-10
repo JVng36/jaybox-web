@@ -1,5 +1,13 @@
 import { test, expect } from '@playwright/test'
 
+const workTitle = 'projects'
+
+test('shares the work title between the tab and its heading', async ({ page }) => {
+  await page.goto('/')
+  await expect(page.getByRole('tab', { name: workTitle, exact: true })).toBeVisible()
+  await expect(page.getByRole('heading', { name: workTitle, level: 2 })).toBeVisible()
+})
+
 test('project notes stay open when switching away and back', async ({ page }) => {
   await page.goto('/')
   const detail = page.locator('details').first()
@@ -10,7 +18,7 @@ test('project notes stay open when switching away and back', async ({ page }) =>
 
   await page.getByRole('tab', { name: 'About me' }).click()
   await expect(summary).toBeHidden()
-  await page.getByRole('tab', { name: 'Projects', exact: true }).click()
+  await page.getByRole('tab', { name: workTitle, exact: true }).click()
   await expect(detail).toHaveAttribute('open', '')
   await summary.click()
   await expect(detail).not.toHaveAttribute('open', '')
@@ -23,7 +31,7 @@ test('the skip link leads into the selected page', async ({ page }) => {
   await page.keyboard.press('Enter')
   await expect(page.getByRole('main')).toBeFocused()
   await page.keyboard.press('Tab')
-  await expect(page.getByRole('tabpanel', { name: 'Projects', exact: true })).toBeFocused()
+  await expect(page.getByRole('tabpanel', { name: workTitle, exact: true })).toBeFocused()
   await page.keyboard.press('Tab')
   await expect(page.locator('summary').first()).toBeFocused()
 })
@@ -38,7 +46,7 @@ for (const [width, height] of [
     await page.setViewportSize({ width, height })
     await page.goto('/')
 
-    for (const name of ['Projects', 'About me', 'Contact']) {
+    for (const name of [workTitle, 'About me', 'Contact']) {
       await page.getByRole('tab', { name, exact: true }).click()
       await expect(page.getByRole('tabpanel', { name, exact: true })).toBeVisible()
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
@@ -62,10 +70,10 @@ for (const [width, height] of [
 }
 
 for (const [fragment, name] of [
-  ['work', 'Projects'],
+  ['work', workTitle],
   ['about', 'About me'],
   ['contact', 'Contact'],
-  ['not-a-section', 'Projects'],
+  ['not-a-section', workTitle],
 ]) {
   test(`opening #${fragment} selects ${name}`, async ({ page }) => {
     await page.goto(`/#${fragment}`)
@@ -74,21 +82,21 @@ for (const [fragment, name] of [
   })
 }
 
-test('opens the notebook with Projects selected', async ({ page }) => {
+test('opens the notebook with the work section selected', async ({ page }) => {
   await page.goto('/')
 
   await expect(page.getByRole('heading', { name: 'Jay', level: 1 })).toBeVisible()
   await expect(page.getByRole('tablist', { name: 'Notebook sections' })).toBeVisible()
-  await expect(page.getByRole('tab', { name: 'Projects', exact: true })).toHaveAttribute('aria-selected', 'true')
+  await expect(page.getByRole('tab', { name: workTitle, exact: true })).toHaveAttribute('aria-selected', 'true')
   await expect(page.getByRole('tabpanel')).toHaveCount(1)
-  await expect(page.getByRole('tabpanel', { name: 'Projects', exact: true })).toBeVisible()
-  await expect(page.getByRole('heading', { name: 'A weekend website' })).toBeVisible()
+  await expect(page.getByRole('tabpanel', { name: workTitle, exact: true })).toBeVisible()
+  await expect(page.locator('#work article').first()).toBeVisible()
 })
 
 test('selecting a tab shows only its matching page', async ({ page }) => {
   await page.goto('/')
 
-  for (const name of ['About me', 'Contact', 'Projects']) {
+  for (const name of ['About me', 'Contact', workTitle]) {
     const tab = page.getByRole('tab', { name, exact: true })
     await tab.click()
     await expect(tab).toHaveAttribute('aria-selected', 'true')
@@ -108,14 +116,14 @@ for (const layout of [
     await page.goto('/')
     const tablist = page.getByRole('tablist')
     await expect(tablist).toHaveAttribute('aria-orientation', layout.orientation)
-    await page.getByRole('tab', { name: 'Projects', exact: true }).focus()
+    await page.getByRole('tab', { name: workTitle, exact: true }).focus()
 
     for (const [key, name] of [
       [layout.next, 'About me'],
       [layout.next, 'Contact'],
-      [layout.next, 'Projects'],
+      [layout.next, workTitle],
       [layout.previous, 'Contact'],
-      ['Home', 'Projects'],
+      ['Home', workTitle],
       ['End', 'Contact'],
       [layout.ignored, 'Contact'],
     ]) {
@@ -131,7 +139,7 @@ for (const layout of [
     await page.setViewportSize({ width: resizedWidth, height: 900 })
     await expect(tablist).toHaveAttribute('aria-orientation', resizedWidth === 390 ? 'horizontal' : 'vertical')
     await page.keyboard.press(resizedWidth === 390 ? 'ArrowRight' : 'ArrowDown')
-    await expect(page.getByRole('tab', { name: 'Projects', exact: true })).toBeFocused()
-    await expect(page.getByRole('tab', { name: 'Projects', exact: true })).toHaveAttribute('aria-selected', 'true')
+    await expect(page.getByRole('tab', { name: workTitle, exact: true })).toBeFocused()
+    await expect(page.getByRole('tab', { name: workTitle, exact: true })).toHaveAttribute('aria-selected', 'true')
   })
 }

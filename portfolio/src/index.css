@@ -78,6 +78,11 @@ h2 { margin: 0; font: normal 32px/1.2 Georgia, serif; }
 .project { padding: 22px 0; border-top: 1px solid var(--line); }
 h3 { font-size: 19px; font-weight: normal; margin: 0; line-height: 1.4; }
 .project > p { margin: 8px 0 6px; color: var(--muted); font-size: 15px; }
+.project > .project-type { margin: 0 0 8px; font-size: 12px; }
+.project > .project-tech { margin: 12px 0 6px; font-size: 12px; }
+.project-link,
+.contact-link { display: inline-flex; align-items: center; min-height: 44px; }
+.project-link { font-size: 14px; }
 
 /* Native details/summary handles project notes without extra React state. */
 summary {
@@ -106,7 +111,9 @@ footer { padding-top: 20px; margin-top: 24px; border-top: 1px solid var(--line);
   .notebook { grid-template-columns: 1fr; width: calc(100% - 28px); gap: 22px; margin: 24px auto; }
   .profile { position: static; padding: 0 8px; }
   .bio { max-width: 40ch; margin-bottom: 18px; }
-  .tabs { flex-direction: row; flex-wrap: wrap; gap: 6px; }
+  .tabs { flex-direction: row; gap: 6px; }
+  /* Equal-width tabs let the longer title wrap inside its button, not onto a new row. */
+  .tabs button { flex: 1; min-width: 0; padding: 8px; justify-content: center; text-align: center; font-size: 14px; }
   .small-note { margin: 14px 0 0; }
   main { padding: 26px 22px; }
   .panel { min-height: 420px; }

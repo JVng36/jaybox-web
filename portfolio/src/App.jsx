@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
+import { projects } from './projects'
 
-// Start with the sample copy here. The stylesheet lives in index.css.
+const workTitle = 'projects'
+
+// The tab and the page heading share this title. The styles live in index.css.
 const sections = [
-  { id: 'work', label: 'Projects' },
+  { id: 'work', label: workTitle },
   { id: 'about', label: 'About me' },
   { id: 'contact', label: 'Contact' },
 ]
@@ -10,38 +13,29 @@ const sections = [
 // Keep this in step with the mobile breakpoint in index.css.
 const narrowScreenQuery = '(max-width: 760px)'
 
-function Projects() {
+function Projects({ title }) {
   return (
     <>
       <p className="page-label">From my notebook</p>
-      <h2>Projects</h2>
+      <h2>{title}</h2>
       <p className="intro">
         A few things I&apos;ve made or am still figuring out. Open a note for the slightly longer version.
       </p>
-      <article className="project">
-        <h3>A weekend website</h3>
-        <p>A home for a few ideas, built slowly and kept simple.</p>
-        <details>
-          <summary>Read my notes</summary>
-          <p>The aim, an interesting decision, and a real project link could go here.</p>
-        </details>
-      </article>
-      <article className="project">
-        <h3>A useful little data tool</h3>
-        <p>A helper for making messy tables less of a chore.</p>
-        <details>
-          <summary>Read my notes</summary>
-          <p>A few sentences about the problem are usually more interesting than a long list of technologies.</p>
-        </details>
-      </article>
-      <article className="project">
-        <h3>Things to come back to</h3>
-        <p>A small place to keep books, ideas, and unfinished work.</p>
-        <details>
-          <summary>Read my notes</summary>
-          <p>Leave room for projects that are personal or still in progress.</p>
-        </details>
-      </article>
+      {projects.map((project) => (
+        <article className="project" key={project.id} aria-labelledby={`${project.id}-title`}>
+          <p className="project-type">{project.type}</p>
+          <h3 id={`${project.id}-title`}>{project.title}</h3>
+          <p>{project.summary}</p>
+          <p className="project-tech">{project.technologies}</p>
+          <details>
+            <summary>Read my notes</summary>
+            {project.notes.map((note) => <p key={note}>{note}</p>)}
+          </details>
+          <a className="project-link" href={project.url} aria-label={`View on GitHub: ${project.title}`}>
+            View on GitHub
+          </a>
+        </article>
+      ))}
     </>
   )
 }
@@ -51,14 +45,10 @@ function About() {
     <>
       <p className="page-label">The person behind the projects</p>
       <h2>A little about me</h2>
-      <p>This is where you can be less concise than the sidebar. A short introduction, what you enjoy making, and the kind of problems that catch your attention.</p>
-      <h3>Outside the code</h3>
-      <p>A few non-work interests give this page a person, not just a skill list. Replace these prompts with things you actually want to share.</p>
-      <ul className="interests">
-        <li>Something you are learning</li>
-        <li>Something you do for fun</li>
-        <li>Something you are curious about</li>
-      </ul>
+      <p>I&apos;m Jay. I&apos;m interested in gamedev, hardware, AI, and making small tools for everyday use.</p>
+      <p>I like figuring out how things work and learning by trying things out. This site is a mix of personal projects, experiments, and older coursework.</p>
+      <h3>About this site</h3>
+      <p>I wanted a small site I could understand and come back to change. It&apos;s built with React and plain CSS, with a notebook layout for now.</p>
     </>
   )
 }
@@ -66,10 +56,11 @@ function About() {
 function Contact() {
   return (
     <>
-      <p className="page-label">Leave a note</p>
+      <p className="page-label">Elsewhere</p>
       <h2>Say hello</h2>
-      <p>Your chosen public email or profile link belongs here. You do not need a contact form, a scheduling widget, or a row of social icons.</p>
-      <p>Keep this page as simple as the way you want someone to get in touch.</p>
+      <p>You can reach me by email or find me on LinkedIn.</p>
+      <p><a className="contact-link" href="https://www.linkedin.com/in/jvang75/">LinkedIn</a></p>
+      <p><a className="contact-link" href="mailto:vangjay36@gmail.com">vangjay36@gmail.com</a></p>
     </>
   )
 }
@@ -114,7 +105,7 @@ function App() {
       <div className="notebook">
         <header className="profile">
           <h1>Jay</h1>
-          <p className="bio">Small projects, things I&apos;m learning, and a little about the person behind them.</p>
+          <p className="bio">Small apps, hardware experiments, and things I&apos;m learning.</p>
           <div className="tabs" role="tablist" aria-label="Notebook sections" aria-orientation={isNarrow ? 'horizontal' : 'vertical'}>
             {sections.map((section, index) => (
               <button
@@ -133,13 +124,13 @@ function App() {
               </button>
             ))}
           </div>
-          <p className="small-note">Pick a section. The page beside it changes.</p>
+          <p className="small-note">Built a little at a time.</p>
         </header>
 
         <main id="main" tabIndex={-1}>
           {/* Hidden panels stay mounted, so an open project note survives switching tabs. */}
           <section className="panel" id="work" role="tabpanel" aria-labelledby="tab-work" tabIndex={0} hidden={activeSection !== 'work'}>
-            <Projects />
+            <Projects title={workTitle} />
           </section>
           <section className="panel about-copy" id="about" role="tabpanel" aria-labelledby="tab-about" tabIndex={0} hidden={activeSection !== 'about'}>
             <About />
@@ -147,7 +138,7 @@ function App() {
           <section className="panel about-copy" id="contact" role="tabpanel" aria-labelledby="tab-contact" tabIndex={0} hidden={activeSection !== 'contact'}>
             <Contact />
           </section>
-          <footer>Portfolio draft. All personal and project copy is illustrative.</footer>
+          <footer>Made with React and plain CSS.</footer>
         </main>
       </div>
     </>
