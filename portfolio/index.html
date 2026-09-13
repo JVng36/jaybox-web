@@ -6,6 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Small apps and hardware experiments by Jay. Notes on an OBSBOT camera bridge, a game backlog tracker, and an Android reminder app." />
     <title>Jay · Projects &amp; notes</title>
+    <script>
+      // Set the palette before styles and React load, avoiding a light-mode flash.
+      (() => {
+        const root = document.documentElement
+        let savedTheme
+        try {
+          savedTheme = localStorage.getItem('portfolio-theme')
+        } catch {
+          // Storage may be unavailable. The device default still works.
+        }
+        const preference = savedTheme === 'light' || savedTheme === 'dark' ? savedTheme : 'system'
+        root.dataset.themePreference = preference
+        root.dataset.theme = preference === 'system'
+          ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+          : preference
+      })()
+    </script>
   </head>
   <body>
     <noscript>This portfolio uses React. Please enable JavaScript to view the notebook.</noscript>

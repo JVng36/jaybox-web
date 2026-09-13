@@ -6,6 +6,7 @@ body,
 
 /* 1. Change these colors to restyle the notebook without changing the layout. */
 :root {
+  color-scheme: light;
   --desk: #eeeae4;
   --paper: #fffefb;
   --ink: #332d28;
@@ -13,6 +14,19 @@ body,
   --accent: #74442e;
   --line: #d7cec4;
   --selection: #e0d6c8;
+  --tab-border: #bbaa99;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --desk: #1d1b19;
+  --paper: #282522;
+  --ink: #eee8df;
+  --muted: #c0b5a8;
+  --accent: #dfaf8f;
+  --line: #51483f;
+  --selection: #3b332c;
+  --tab-border: #84705c;
 }
 
 * { box-sizing: border-box; }
@@ -65,9 +79,28 @@ h1 { font: normal 43px/1.1 Georgia, serif; margin: 0; letter-spacing: -1px; }
 .tabs button[aria-selected="true"] {
   color: var(--ink);
   background: var(--selection);
-  border-color: #bbaa99;
+  border-color: var(--tab-border);
   font-weight: bold;
 }
+
+/* A separate utility button, not another notebook tab. */
+.theme-controls { display: flex; margin-top: 20px; }
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.theme-toggle svg { flex-shrink: 0; }
+.theme-toggle:hover { color: var(--ink); background: var(--selection); border-color: var(--accent); }
 
 /* 4. A minimum height keeps the sheet steady when changing sections. */
 main { background: var(--paper); border: 1px solid var(--line); min-width: 0; padding: 36px 40px; }
@@ -116,6 +149,7 @@ footer { padding-top: 20px; margin-top: 24px; border-top: 1px solid var(--line);
   .tabs { flex-direction: row; gap: 6px; }
   /* Equal-width tabs let the longer title wrap inside its button, not onto a new row. */
   .tabs button { flex: 1; min-width: 0; padding: 8px; justify-content: center; text-align: center; font-size: 14px; }
+  .theme-controls { justify-content: flex-end; margin-top: 14px; }
   .small-note { margin: 14px 0 0; }
   main { padding: 26px 22px; }
   .panel { min-height: 420px; }

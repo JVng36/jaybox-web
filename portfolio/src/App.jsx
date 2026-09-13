@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { projects } from './projects'
+import ThemeToggle from './ThemeToggle'
 
 const workTitle = 'Projects'
 
@@ -147,6 +148,7 @@ function App() {
               </button>
             ))}
           </div>
+          <ThemeToggle />
           <p className="small-note"></p>
         </header>
 
