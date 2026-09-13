@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 
-const workTitle = 'projects'
+const workTitle = 'Projects'
 
 test('shares the work title between the tab and its heading', async ({ page }) => {
   await page.goto('/')

@@ -55,11 +55,12 @@ test('project and contact links have comfortable touch targets on a phone', asyn
   }
 })
 
-test('Contact uses the supplied LinkedIn and email without a dummy form', async ({ page }) => {
+test('Contact uses the supplied profiles and email without a dummy form', async ({ page }) => {
   await page.goto('/#contact')
   const contact = page.getByRole('tabpanel', { name: 'Contact' })
   const expectedLinks = [
     { label: 'LinkedIn', url: 'https://www.linkedin.com/in/jvang75/' },
+    { label: 'GitHub', url: 'https://github.com/JVng36' },
     { label: 'vangjay36@gmail.com', url: 'mailto:vangjay36@gmail.com' },
   ]
   for (const { label, url } of expectedLinks) {
