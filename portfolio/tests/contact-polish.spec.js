@@ -5,7 +5,7 @@ test('Contact introduces the page with Contact Me', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Contact Me', exact: true })).toBeVisible()
 })
 
-test('Contact uses LinkedIn and GitHub icons with labeled profile links', async ({ page }) => {
+test('Contact uses matching icons with labeled profile and email links', async ({ page }) => {
   for (const width of [320, 390, 1440]) {
     await page.setViewportSize({ width, height: 900 })
     await page.goto('/#contact')
@@ -13,6 +13,7 @@ test('Contact uses LinkedIn and GitHub icons with labeled profile links', async 
     for (const [name, href] of [
       ['LinkedIn', 'https://www.linkedin.com/in/jvang75/'],
       ['GitHub', 'https://github.com/JVng36'],
+      ['vangjay36@gmail.com', 'mailto:vangjay36@gmail.com'],
     ]) {
       const link = contact.getByRole('link', { name, exact: true })
       await expect(link).toHaveAttribute('href', href)

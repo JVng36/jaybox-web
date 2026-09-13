@@ -1,4 +1,4 @@
-Bootstrap Icons v1.13.1: LinkedIn and GitHub icons
+Bootstrap Icons v1.13.1: LinkedIn, GitHub, and envelope-fill icons
 https://github.com/twbs/icons
 
 The MIT License (MIT)

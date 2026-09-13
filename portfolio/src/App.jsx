@@ -59,7 +59,7 @@ function Contact() {
       <p className="page-label">Elsewhere</p>
       <h2>Contact Me</h2>
       <p>You can reach me by email or find me on LinkedIn and GitHub.</p>
-      {/* Brand icons from Bootstrap Icons. License: /licenses/bootstrap-icons.txt */}
+      {/* Icons from Bootstrap Icons. License: /licenses/bootstrap-icons.txt */}
       <p>
         <a className="contact-link" href="https://www.linkedin.com/in/jvang75/">
           <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false">
@@ -76,7 +76,14 @@ function Contact() {
           <span>GitHub</span>
         </a>
       </p>
-      <p><a className="contact-link" href="mailto:vangjay36@gmail.com">vangjay36@gmail.com</a></p>
+      <p>
+        <a className="contact-link" href="mailto:vangjay36@gmail.com">
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" focusable="false">
+            <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586zm3.436-.586L16 11.801V4.697z" />
+          </svg>
+          <span>vangjay36@gmail.com</span>
+        </a>
+      </p>
     </>
   )
 }
