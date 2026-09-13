@@ -8,7 +8,7 @@ const indexHtml = await readFile(new URL('index.html', landingDirectory), 'utf8'
 test('landing page is a short introduction with its two existing destinations', () => {
   const body = indexHtml.match(/<body>([\s\S]*?)<\/body>/)[1];
   const visibleText = body.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
-  assert.equal(visibleText, 'Jaybox Hi, I’m Jay. Portfolio Herma');
+  assert.equal(visibleText, "Jaybox Hi, I'm Jay. I use Jaybox for my portfolio, personal projects, and services I run for my own use. You’ll find links to the public parts below. Portfolio Herma");
   const links = [...body.matchAll(/<a\s+[^>]*href="([^"]+)"[^>]*>([^<]+)<\/a>/g)];
   assert.deepEqual(links.map(([, href, label]) => [href, label]), [
     ['https://portfolio.jaybox.dev', 'Portfolio'],
