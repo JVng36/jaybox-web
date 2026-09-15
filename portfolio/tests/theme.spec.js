@@ -13,7 +13,7 @@ test('the labeled theme button toggles by keyboard without changing the selected
   const lightToggle = page.getByRole('button', { name: 'Switch to light mode', exact: true })
   await expect(lightToggle).toHaveText('Light mode')
   await expect(lightToggle).toBeFocused()
-  await expect(page.getByRole('heading', { name: 'Contact Me', exact: true })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Contact me', exact: true })).toBeVisible()
   await page.keyboard.press('Space')
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
 })

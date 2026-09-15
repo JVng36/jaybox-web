@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test'
 
-test('Contact introduces the page with Contact Me', async ({ page }) => {
+test('Contact introduces the page with Contact me', async ({ page }) => {
   await page.goto('/#contact')
-  await expect(page.getByRole('heading', { name: 'Contact Me', exact: true })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Contact me', exact: true })).toBeVisible()
 })
 
 test('Contact uses matching icons with labeled profile and email links', async ({ page }) => {

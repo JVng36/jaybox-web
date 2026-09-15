@@ -14,28 +14,48 @@ const sections = [
 // Keep this in step with the mobile breakpoint in index.css.
 const narrowScreenQuery = '(max-width: 760px)'
 
+function Project({ project }) {
+  const [notesOpen, setNotesOpen] = useState(false)
+  const notesId = `${project.id}-notes`
+
+  return (
+    <article className="project" aria-labelledby={`${project.id}-title`}>
+      <p className="project-type">{project.type}</p>
+      <h3 id={`${project.id}-title`}>{project.title}</h3>
+      <p>{project.summary}</p>
+      <p className="project-tech">{project.technologies}</p>
+      <div className="project-actions">
+        <button
+          className="notes-toggle"
+          type="button"
+          aria-expanded={notesOpen}
+          aria-controls={notesId}
+          onClick={() => setNotesOpen((open) => !open)}
+        >
+          <span aria-hidden="true">{notesOpen ? '▾' : '▸'}</span>
+          Read my notes
+        </button>
+        <a className="project-link" href={project.url} aria-label={`View on GitHub: ${project.title}`}>
+          View on GitHub
+        </a>
+      </div>
+      <div className="project-notes" id={notesId} hidden={!notesOpen}>
+        {project.notes.map((note) => <p key={note}>{note}</p>)}
+      </div>
+    </article>
+  )
+}
+
 function Projects({ title }) {
   return (
     <>
       <p className="page-label">From my notebook</p>
       <h2>{title}</h2>
       <p className="intro">
-        A few things I&apos;ve made or am still figuring out. Open a note for the slightly longer version.
+        Projects I’ve built, with notes on how they work and the decisions behind them.
       </p>
       {projects.map((project) => (
-        <article className="project" key={project.id} aria-labelledby={`${project.id}-title`}>
-          <p className="project-type">{project.type}</p>
-          <h3 id={`${project.id}-title`}>{project.title}</h3>
-          <p>{project.summary}</p>
-          <p className="project-tech">{project.technologies}</p>
-          <details>
-            <summary>Read my notes</summary>
-            {project.notes.map((note) => <p key={note}>{note}</p>)}
-          </details>
-          <a className="project-link" href={project.url} aria-label={`View on GitHub: ${project.title}`}>
-            View on GitHub
-          </a>
-        </article>
+        <Project key={project.id} project={project} />
       ))}
     </>
   )
@@ -49,7 +69,7 @@ function About() {
       <p>I&apos;m Jay. I&apos;m interested in gamedev, hardware, AI, and making small tools for everyday use.</p>
       <p>I like figuring out how things work and learning by trying things out. This site is a mix of personal projects, experiments, and older coursework.</p>
       <h3>About this site</h3>
-      <p>I wanted a small site I could understand and come back to change. It&apos;s built with React and plain CSS, with a notebook layout for now.</p>
+      <p>I built this site with React and plain CSS, using a notebook layout to keep the focus on the projects.</p>
     </>
   )
 }
@@ -58,7 +78,7 @@ function Contact() {
   return (
     <>
       <p className="page-label">Elsewhere</p>
-      <h2>Contact Me</h2>
+      <h2>Contact me</h2>
       <p>You can reach me by email or find me on LinkedIn and GitHub.</p>
       {/* Icons from Bootstrap Icons. License: /licenses/bootstrap-icons.txt */}
       <p>
@@ -128,8 +148,9 @@ function App() {
       <a className="skip" href="#main">Skip to content</a>
       <div className="notebook">
         <header className="profile">
-          <h1>Jay</h1>
-          <p className="bio">Small apps, hardware experiments, and things I&apos;m learning.</p>
+          <h1>Jay Vang</h1>
+          <p className="bio">Software projects, hardware experiments, and AI tools.</p>
+          <p className="availability">Open to new opportunities.</p>
           <div className="tabs" role="tablist" aria-label="Notebook sections" aria-orientation={isNarrow ? 'horizontal' : 'vertical'}>
             {sections.map((section, index) => (
               <button
@@ -163,7 +184,6 @@ function App() {
           <section className="panel about-copy" id="contact" role="tabpanel" aria-labelledby="tab-contact" tabIndex={0} hidden={activeSection !== 'contact'}>
             <Contact />
           </section>
-          <footer>Made with React and plain CSS.</footer>
         </main>
       </div>
     </>

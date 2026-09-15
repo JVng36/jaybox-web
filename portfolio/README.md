@@ -29,12 +29,13 @@ The entry path is `index.html` → `src/main.jsx` → `src/App.jsx`.
 | `src/main.jsx` | Connects React to the HTML page. You do not need to edit this to change your portfolio content. |
 | `index.html` | The browser title, description, favicon link, and root element. |
 | `tests/notebook.spec.js` | Browser checks for tab selection, keyboard use, project notes, direct links, and responsive layout. |
+| `tests/polish.spec.js`, `tests/project-actions.spec.js` | Checks the public name, availability, direct copy, and shared action rows. |
 | `tests/portfolio.spec.js` | Checks project order and links, personal copy, metadata, and phone-sized link targets. |
 | `CONTENT.md` | Public evidence behind the project descriptions and boundaries to preserve when editing. |
 
 **For your first edits, ignore the keyboard code.** Change a project title or description in `src/projects.js`, then save and look at the browser. Next, try changing a color in the stylesheet's `:root` block.
 
-There is no content database or CMS. `projects` is an ordinary array of objects, rendered with `.map()` just like the navigation. To add a project, duplicate an object, give it a unique `id`, and edit its text and URL. Each item in `notes` becomes a paragraph inside the browser's native disclosure.
+There is no content database or CMS. `projects` is an ordinary array of objects, rendered with `.map()` just like the navigation. To add a project, duplicate an object, give it a unique `id`, and edit its text and URL. Each item in `notes` becomes a paragraph in an expandable note below the project's action row.
 
 The shared-title path is `workTitle` → `<Projects title={workTitle} />` → `function Projects({ title })` → `<h2>{title}</h2>`. The tab label uses the same `workTitle` value. IDs such as `work` stay separate from the displayed wording.
 
@@ -47,7 +48,7 @@ The shared-title path is `workTitle` → `<Projects title={workTitle} />` → `f
 - `useRef` keeps references to the buttons so arrow keys can move keyboard focus.
 - `useEffect` listens for changes to the mobile breakpoint and cleans up that listener when the component is removed.
 - Desktop tabs use Up/Down; mobile tabs use Left/Right. Home and End jump to the first and last tabs. Tab moves into the selected page.
-- Project notes use the browser's own `<details>` and `<summary>` elements, not another state variable.
+- Each `Project` component keeps its own `notesOpen` state. The note button exposes `aria-expanded` and `aria-controls`; the linked note stays mounted and uses `hidden` when closed. The button and GitHub link share a wrapping action row, while expanded notes use the full project width.
 
 The mobile breakpoint is **760px** in both `App.jsx` and `index.css`. Change both if you change that breakpoint.
 

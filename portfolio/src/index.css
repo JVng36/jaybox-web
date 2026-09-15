@@ -57,7 +57,8 @@ a { color: var(--accent); text-underline-offset: 4px; }
 
 .profile { position: sticky; top: 32px; padding-top: 18px; }
 h1 { font: normal 43px/1.1 Georgia, serif; margin: 0; letter-spacing: -1px; }
-.bio { color: var(--muted); font-size: 15px; max-width: 23ch; margin: 18px 0 26px; }
+.bio { color: var(--muted); font-size: 15px; max-width: 23ch; margin: 18px 0 12px; }
+.availability { margin: 0 0 26px; color: var(--accent); font-size: 14px; }
 .small-note { font-size: 13px; color: var(--muted); margin-top: 30px; }
 
 /* 3. The buttons get their selected state from React's aria-selected attribute. */
@@ -119,26 +120,29 @@ h3 { font-size: 19px; font-weight: normal; margin: 0; line-height: 1.4; }
 .contact-link { gap: 10px; }
 .contact-link svg { flex-shrink: 0; }
 
-/* Native details/summary handles project notes without extra React state. */
-summary {
-  display: list-item;
-  list-style-position: inside;
-  width: fit-content;
+/* Actions stay together; expanded notes use the full project width below. */
+.project-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0 20px; }
+.notes-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   min-height: 44px;
-  padding: 9px 0;
+  padding: 0;
+  border: 0;
+  background: none;
   color: var(--accent);
+  font: inherit;
   font-size: 14px;
   cursor: pointer;
   text-decoration: underline;
   text-underline-offset: 4px;
 }
-summary:hover { color: var(--ink); }
-details p { font-size: 15px; color: var(--muted); }
+.notes-toggle:hover { color: var(--ink); }
+.project-notes p { font-size: 15px; color: var(--muted); }
 .about-copy p { max-width: 49ch; color: var(--muted); }
 .about-copy h3 { margin-top: 26px; }
 .interests { padding-left: 20px; color: var(--muted); }
 .interests li { margin-bottom: 12px; }
-footer { padding-top: 20px; margin-top: 24px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; }
 
 /* 5. On phones, the identity moves above the sheet and tabs run horizontally.
    The keyboard orientation in App.jsx uses the same 760px breakpoint. */

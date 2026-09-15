@@ -83,15 +83,15 @@ for (const width of [320, 390, 1440]) {
     await page.setViewportSize({ width, height: 900 })
     await page.emulateMedia({ colorScheme: 'dark' })
     await page.goto('/')
-    await page.locator('summary').first().click()
+    await page.locator('.notes-toggle').first().click()
     for (const section of ['About me', 'Contact', 'Projects']) {
       await page.getByRole('tab', { name: section, exact: true }).click()
       await expect(page.getByRole('tabpanel', { name: section, exact: true })).toBeVisible()
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
     }
-    await expect(page.locator('details').first()).toHaveAttribute('open', '')
+    await expect(page.locator('.project-notes').first()).toBeVisible()
     await page.getByRole('button', { name: 'Switch to light mode', exact: true }).click()
-    await expect(page.locator('details').first()).toHaveAttribute('open', '')
+    await expect(page.locator('.project-notes').first()).toBeVisible()
     await page.getByRole('button', { name: 'Switch to dark mode', exact: true }).click()
     await page.getByRole('tab', { name: 'Contact', exact: true }).click()
     await expect(page.locator('#contact a svg')).toHaveCount(3)

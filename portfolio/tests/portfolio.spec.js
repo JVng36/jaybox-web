@@ -9,9 +9,9 @@ const expectedProjects = [
 test('Dailies notes keep the capstone context and leave tutorial citations to the report', async ({ page }) => {
   await page.goto('/')
   const project = page.getByRole('article', { name: 'Dailies Reminder Mobile App', exact: true })
-  await project.locator('summary').click()
+  await project.locator('.notes-toggle').click()
   await expect(project).toContainText('Android / Capstone project')
-  await expect(project.locator('details')).toContainText('original project report')
+  await expect(project.locator('.project-notes')).toContainText('original project report')
   await expect(project).not.toContainText(/data[\s-]*flair|tutorial/i)
 })
 
@@ -30,13 +30,12 @@ test('phone tabs stay on one row', async ({ page }) => {
   }
 })
 
-test('the notebook uses personal metadata and no illustrative-copy footer', async ({ page }) => {
+test('the notebook uses personal metadata without a repeated footer', async ({ page }) => {
   await page.goto('/')
-  await expect(page).toHaveTitle('Jay · Projects & notes')
+  await expect(page).toHaveTitle('Jay Vang · Projects & notes')
   await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /OBSBOT.*game backlog tracker.*Android reminder app/)
   await expect(page.locator('.bio')).toContainText('hardware experiments')
-  await expect(page.locator('footer')).toContainText('React and plain CSS')
-  await expect(page.locator('footer')).not.toContainText(/draft|illustrative/i)
+  await expect(page.locator('footer')).toHaveCount(0)
 })
 
 test('project and contact links have comfortable touch targets on a phone', async ({ page }) => {

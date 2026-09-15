@@ -10,18 +10,21 @@ test('shares the work title between the tab and its heading', async ({ page }) =
 
 test('project notes stay open when switching away and back', async ({ page }) => {
   await page.goto('/')
-  const detail = page.locator('details').first()
-  const summary = detail.locator('summary')
+  const detail = page.locator('.project-notes').first()
+  const summary = page.getByRole('button', { name: 'Read my notes', exact: true }).first()
   await summary.focus()
   await page.keyboard.press('Enter')
-  await expect(detail).toHaveAttribute('open', '')
+  await expect(detail).toBeVisible()
+  await expect(summary).toHaveAttribute('aria-expanded', 'true')
 
   await page.getByRole('tab', { name: 'About me' }).click()
   await expect(summary).toBeHidden()
   await page.getByRole('tab', { name: workTitle, exact: true }).click()
-  await expect(detail).toHaveAttribute('open', '')
+  await expect(detail).toBeVisible()
+  await expect(summary).toHaveAttribute('aria-expanded', 'true')
   await summary.click()
-  await expect(detail).not.toHaveAttribute('open', '')
+  await expect(detail).toBeHidden()
+  await expect(summary).toHaveAttribute('aria-expanded', 'false')
 })
 
 test('the skip link leads into the selected page', async ({ page }) => {
@@ -33,7 +36,7 @@ test('the skip link leads into the selected page', async ({ page }) => {
   await page.keyboard.press('Tab')
   await expect(page.getByRole('tabpanel', { name: workTitle, exact: true })).toBeFocused()
   await page.keyboard.press('Tab')
-  await expect(page.locator('summary').first()).toBeFocused()
+  await expect(page.locator('.notes-toggle').first()).toBeFocused()
 })
 
 for (const [width, height] of [
@@ -85,7 +88,7 @@ for (const [fragment, name] of [
 test('opens the notebook with the work section selected', async ({ page }) => {
   await page.goto('/')
 
-  await expect(page.getByRole('heading', { name: 'Jay', level: 1 })).toBeVisible()
+  await expect(page.getByRole('heading', { name: 'Jay Vang', level: 1 })).toBeVisible()
   await expect(page.getByRole('tablist', { name: 'Notebook sections' })).toBeVisible()
   await expect(page.getByRole('tab', { name: workTitle, exact: true })).toHaveAttribute('aria-selected', 'true')
   await expect(page.getByRole('tabpanel')).toHaveCount(1)
