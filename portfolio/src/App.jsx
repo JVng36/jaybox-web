@@ -49,7 +49,7 @@ function Project({ project }) {
 function Projects({ title }) {
   return (
     <>
-      <p className="page-label">From my notebook</p>
+      <p className="page-label">What I've built</p>
       <h2>{title}</h2>
       <p className="intro">
         Projects I’ve built, with notes on how they work and the decisions behind them.

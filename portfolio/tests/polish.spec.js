@@ -3,6 +3,9 @@ import { test, expect } from '@playwright/test'
 test('the page describes the work directly without tentative filler', async ({ page }) => {
   await page.goto('/')
   await expect(page.locator('.bio')).toHaveText('Software projects, hardware experiments, and AI tools.')
+  await expect(page.locator('#work .page-label')).toHaveText("What I've built")
+  await expect(page.locator('#work h2')).toHaveText('Projects')
+  await expect(page.locator('#work')).not.toContainText('From my notebook')
   await expect(page.locator('#work .intro')).toHaveText('Projects I’ve built, with notes on how they work and the decisions behind them.')
   await page.getByRole('tab', { name: 'About me', exact: true }).click()
   await expect(page.locator('#about')).toContainText('I built this site with React and plain CSS, using a notebook layout to keep the focus on the projects.')
