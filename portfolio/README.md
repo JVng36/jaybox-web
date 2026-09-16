@@ -39,6 +39,18 @@ There is no content database or CMS. `projects` is an ordinary array of objects,
 
 The shared-title path is `workTitle` → `<Projects title={workTitle} />` → `function Projects({ title })` → `<h2>{title}</h2>`. The tab label uses the same `workTitle` value. IDs such as `work` stay separate from the displayed wording.
 
+## Notebook styling
+
+Section **6. Margin notebook** at the end of `src/index.css` contains the paper details:
+
+- `--rule` colors the blue entry dividers; `--margin-rule` colors the vertical margin. Each has a light and dark value.
+- `main::before` draws the margin as an empty decorative element. `pointer-events: none` lets clicks pass through it.
+- `main` uses a small `box-shadow` to suggest another sheet underneath.
+- The selected navigation button has a stronger edge and rounded outer corners, like an index tab.
+- The final mobile rule narrows the margin and moves the selected tab's stronger edge to the top.
+
+These are CSS-only decorations. The content and React controls do not depend on them. There are no paper images, additional font downloads, or animation libraries. `tests/margin-notebook.spec.js` checks the rules and usable space in both palettes on desktop and phones.
+
 ## How the tabs work
 
 - `sections` lists the section IDs and button labels.
